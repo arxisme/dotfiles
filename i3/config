@@ -1,0 +1,83 @@
+set $mod Mod4
+
+client.focused          #1F292E #1F292E #FFFFFF #1F292E #1F292E
+client.unfocused        #1F292E #1F292E #FFFFFF #1F292E #1F292E
+client.urgent           #1F292E #1F292E #FFFFFF #1F292E #1F292E
+client.placeholder      #1F292E #1F292E #FFFFFF #1F292E #1F292E
+
+
+font pango:MesloLGS Nerd Font Mono 10
+
+bar {
+    status_command i3status
+
+    colors {
+        background #1F292E  # General bar background
+        statusline #FFFFFF   # White text for the status bar
+
+        focused_workspace  #2E2E2E #2E2E2E #FFFFFF  # Dark gray for active workspace
+        inactive_workspace #1F292E #1F292E #FFFFFF  # Bluish-gray for inactive workspaces
+        urgent_workspace   #1F292E #1F292E #FF0000  # Red text for urgent workspaces
+    }
+}
+
+
+bindsym $mod+Return exec kitty
+bindsym $mod+w exec firefox
+bindsym $mod+o exec obsidian
+bindsym $mod+n exec nautilus
+bindsym $mod+d exec dmenu_run
+
+bindsym $mod+m exec  spotify
+bindsym $mod+p exec evince
+bindsym $mod+Shift+e exit
+bindsym $mod+Shift+r restart
+bindsym $mod+Shift+l exec i3lock
+bindsym $mod+Shift+q kill
+bindsym $mod+f fullscreen toggle
+bindsym $mod+h split h
+bindsym $mod+v split v
+bindsym $mod+space focus mode_toggle
+bindsym $mod+j focus left
+bindsym $mod+k focus down
+bindsym $mod+l focus up
+bindsym $mod+semicolon focus right
+
+mode "resize" {
+    bindsym Left resize shrink width 10 px or 10 ppt
+    bindsym Down resize grow height 10 px or 10 ppt
+    bindsym Up resize shrink height 10 px or 10 ppt
+    bindsym Right resize grow width 10 px or 10 ppt
+    bindsym Escape mode "default"
+    bindsym Return mode "default"
+}
+bindsym $mod+r mode "resize"
+
+bindsym $mod+1 workspace 1
+bindsym $mod+2 workspace 2
+bindsym $mod+3 workspace 3
+bindsym $mod+4 workspace 4
+bindsym $mod+Shift+1 move container to workspace 1
+bindsym $mod+Shift+2 move container to workspace 2
+
+bindsym $mod+Shift+3 move container to workspace 3
+bindsym $mod+Shift+4 move container to workspace 4
+
+
+bindsym XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +5%
+bindsym XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -5%
+bindsym XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle
+
+bindsym XF86MonBrightnessDown exec --no-startup-id brightnessctl --min-val=2 -q set 3%-
+bindsym XF86MonBrightnessUp exec --no-startup-id brightnessctl -q set 3%+
+exec --no-startup-id i3-msg 'workspace 1; exec kitty'
+exec --no-startup-id xinput set-prop 13 "libinput Tapping Enabled" 1  
+
+exec --no-startup-id feh --bg-scale --zoom fill ~/Pictures/1.jpg
+
+# Ensure Obsidian opens in workspace 3
+for_window [class="obsidian"] move to workspace 3; workspace 3
+
+for_window [class="firefox"] move to workspace 2; workspace 2
+for_window [class="floating"] floating enable
+
